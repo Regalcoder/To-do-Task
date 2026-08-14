@@ -1,110 +1,616 @@
-*{
+/* ==========================================================================
+   1. ACCESSIBLE COLOR VARIABLES & THEMES
+   ========================================================================== */
+
+/* DARK THEME */
+html[data-theme="dark"],
+:root[data-theme="dark"] {
+    --bg-body: #0b0f17;
+    --bg-card: #151c28;
+    --bg-hover: #1e2736;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #243044;
+    --primary: #38bdf8;
+    --primary-hover: #0284c7;
+    --shadow: rgba(0, 0, 0, 0.4);
+    
+    /* Badges */
+    --priority-high: #f43f5e;
+    --priority-medium: #f59e0b;
+    --priority-low: #10b981;
+    --badge-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* WARM, EYE-FRIENDLY LIGHT THEME */
+html[data-theme="light"],
+:root[data-theme="light"] {
+    --bg-body: #f4f1ea;        /* Warm parchment/cream background */
+    --bg-card: #fcfbfa;        /* Soft off-white card surfaces */
+    --bg-hover: #eae5d9;       /* Subtle warm tone on hover */
+    --text-main: #2b2927;      /* Warm dark charcoal (not harsh black) */
+    --text-muted: #6b655f;     /* Warm muted gray */
+    --border-color: #e2ddd3;   /* Soft warm border */
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --shadow: rgba(43, 41, 39, 0.05);
+
+    /* Badges */
+    --priority-high: #e11d48;
+    --priority-medium: #d97706;
+    --priority-low: #059669;
+    --badge-bg: #eae5d9;
+}
+
+/* ==========================================================================
+   2. GLOBAL RESETS & BASE STYLES
+   ========================================================================== */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
-.container{
-    width: 100%;
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-body);
+    background-attachment: fixed;
+    color: var(--text-main);
     min-height: 100vh;
-    background: linear-gradient(135deg, #153677, #4e085f);
-    padding: 10px;
+    padding: 2rem 1rem;
+    line-height: 1.5;
 }
 
-.todo-app{
-    width: 100%; 
-    max-width: 540px;
-    background-color: #fff;
-    margin: 100px auto 20px;
-    padding: 40px 30px 70px;
-    border-radius: 10px;
-}
+/* Prevent child icons from capturing mouse clicks inside buttons */
+/* button i {
+    pointer-events: none;
+} */
 
-.todo-app h2{
-    color: #002765;
+.app-container {
+    max-width: 720px;
+    margin: 0 auto;
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
-.todo-app h2 img{
-    width: 30px;
-    margin-left: 10px;
-}
-
-.row{
+/* ==========================================================================
+   3. HEADER & BRANDING
+   ========================================================================== */
+.app-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    background-color: #edeef0;
-    border-radius: 30px;
-    padding-left: 20px;
-    margin-bottom: 25px;
+    align-items: center;
+    padding: 0.5rem 0;
 }
 
-input{
-    flex: 1;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.brand h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========================================================================
+   4. BUTTONS, INPUTS & SELECT DROPDOWNS
+   ========================================================================== */
+.icon-btn, .btn-secondary, .btn-primary {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.icon-btn {
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 0.6rem 0.8rem;
+}
+
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--primary);
+    padding: 0.55rem 0.9rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
     border: none;
-    outline: none;
+    padding: 0.65rem 1.2rem;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+/* Select element resetting */
+select {
     background: transparent;
-    padding: 10px;
-    font-weight: 14px;
+    border: none;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
 }
 
-button{
+/* Explicit dropdown option styling for clear contrast */
+select option {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    padding: 0.5rem;
+}
+
+/* ==========================================================================
+   5. CARDS & TASK FORM
+   ========================================================================== */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+#taskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-group input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0.6rem 0;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+}
+
+.form-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.select-wrapper, .date-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--badge-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.date-wrapper input {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   6. TOOLBAR, SEARCH & FILTERS
+   ========================================================================== */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-box input {
+    background: transparent;
     border: none;
     outline: none;
-    padding: 16px 50px;
-    background-color: #ff5945;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 40px;
+    color: var(--text-main);
+    width: 100%;
+    font-size: 0.88rem;
 }
 
-ul li{
+.filter-chips {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.chip.active, .chip:hover {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+/* ==========================================================================
+   7. STATS BAR & TASK CARDS
+   ========================================================================== */
+.stats-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 0 0.2rem;
+}
+
+.btn-link {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    color: var(--priority-high);
+    text-decoration: underline;
+}
+
+.task-list {
     list-style: none;
-    font-size: 17px;
-    padding: 12px 8px 12px 50px;
-    user-select: none;
-    cursor: pointer;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-ul li::before{
-    content: '';
-    position: absolute;
-    height: 28px;
-    width: 28px;
-    border-radius: 50%;
-    background-image: url(images/unchecked.png);
-    background-size: cover;
-    background-position: center;
-    top: 7px;
-    left: 8px;
+.task-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
-ul li.checked{
-    color: #555;
+.task-card.completed {
+    opacity: 0.6;
+}
+
+.task-card.completed .task-title {
     text-decoration: line-through;
 }
 
-ul li.checked::before{
-    background-image: url(images/checked.png);
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.2rem;
+    cursor: pointer;
+    accent-color: var(--primary);
 }
 
-ul li span{
-    position: absolute;
-    right: 0;
-    top: 5px;
-    width: 40px;
-    height: 40px;
-    font-size: 22px;
-    color: #555;
-    line-height: 40px;
+.task-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.task-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+.task-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.badge-priority-high { background: rgba(244, 63, 94, 0.15); color: var(--priority-high); }
+.badge-priority-medium { background: rgba(245, 158, 11, 0.15); color: var(--priority-medium); }
+.badge-priority-low { background: rgba(16, 185, 129, 0.15); color: var(--priority-low); }
+
+.badge-category { background: var(--badge-bg); color: var(--text-muted); border: 1px solid var(--border-color); }
+.badge-date { font-size: 0.78rem; color: var(--text-muted); }
+.badge-date.overdue { color: var(--priority-high); font-weight: 600; }
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.2rem;
+}
+
+.delete-btn:hover {
+    color: var(--priority-high);
+}
+
+.empty-state {
     text-align: center;
-    border-radius: 50%;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    display: none;
 }
 
-ul li span:hover{
-    background-color: #edeef0;
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 600px) {
+    .form-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-primary {
+        justify-content: center;
+    }
+}
+
+
+/* Task Description */
+.task-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0.2rem 0 0.4rem 0;
+    line-height: 1.4;
+}
+
+/* Date Badges */
+.badge-date.due-today {
+    color: var(--priority-medium);
+    font-weight: 600;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.task-actions .icon-btn-sm {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.task-actions .icon-btn-sm:hover {
+    color: var(--primary);
+}
+
+.task-actions .delete-btn:hover {
+    color: var(--priority-high);
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.action-btn.edit-btn:hover {
+    color: var(--primary);
+}
+
+.action-btn.delete-btn:hover {
+    color: var(--priority-high);
+}
+
+
+/* ==========================================================================
+   9. DRAG AND DROP & ACTION BUTTON STYLES
+   ========================================================================== */
+.task-card[draggable="true"] {
+    cursor: grab;
+}
+
+.task-card.dragging {
+    opacity: 0.4;
+    border: 2px dashed var(--primary);
+    cursor: grabbing;
+}
+
+.drag-handle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0.2rem 0.2rem 0.2rem 0;
+    cursor: grab;
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+}
+
+.task-card:hover .drag-handle {
+    opacity: 1;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.action-btn.edit-btn:hover {
+    color: var(--primary);
+}
+
+.action-btn.delete-btn:hover {
+    color: var(--priority-high);
+}
+
+.sort-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
+}
+
+/* Keyboard Shortcut Badge */
+.shortcut-badge {
+    position: absolute;
+    right: 0.5rem;
+    background: var(--badge-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: inherit;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .shortcut-badge {
+        display: none;
+    }
+}
+
+
+/* ==========================================================================
+   10. TOAST NOTIFICATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+.toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(1rem) scale(0.95);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.toast-success {
+    border-left-color: #10b981;
+}
+
+.toast-success i {
+    color: #10b981;
+}
+
+.toast-danger {
+    border-left-color: var(--priority-high);
+}
+
+.toast-danger i {
+    color: var(--priority-high);
+}
+
+.toast-info {
+    border-left-color: var(--primary);
+}
+
+.toast-info i {
+    color: var(--primary);
+}
+
+/* Checkbox & Button Micro-Interactions */
+.task-checkbox, 
+.action-btn {
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.task-checkbox:active,
+.action-btn:active {
+    transform: scale(0.88);
 }

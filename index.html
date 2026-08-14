@@ -1,26 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TODO LIST APP</title>
-    <link rel="stylesheet" href="style.css"/>
+    <title>Task Flow | Advanced Task Manager</title>
+    
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="todo-app">
-            <h2>TO-DO LIST <img src="images/icon.png" alt="icon"/></h2>
-            <div class="row">
-                <input type="text" id="input-box" placeholder="Add your text" />
-                <button onclick="addTask()">Add</button>
+
+    <div class="app-container">
+        <!-- HEADER & THEME TOGGLE -->
+        <header class="app-header">
+            <div class="brand">
+                <i class="fa-solid fa-list-check logo-icon"></i>
+                <h1>Task Flow</h1>
             </div>
-            <ul id="list-container">
-                <!-- <li class="checked">Task 1</li>
-                <li>Task 1</li>
-                <li>Task 1</li> -->
-            </ul>
+            
+            <div class="header-actions">
+                
+                <!-- Export Button -->
+                <button id="exportBtn" class="icon-btn" title="Export tasks as JSON">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+                
+                <!-- Import Button & Hidden File Input -->
+                <label for="importInput" class="icon-btn" title="Import tasks from JSON" style="cursor: pointer; display: inline-flex; align-items: center;">
+                    <i class="fa-solid fa-upload"></i>
+                </label>
+                <input type="file" id="importInput" accept=".json" style="display: none;">
+
+                <button id="demoBtn" class="btn-secondary" title="Populate sample tasks for demo">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Load Demo
+                </button>
+                <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun" id="themeIcon"></i>
+                </button>
+            
+            </div>
+        </header>
+
+        <!-- TASK CREATION FORM -->
+        <section class="card form-card">
+            <form id="taskForm">
+                <div class="input-group">
+                    <input type="text" id="taskTitle" placeholder="What needs to be done?" required>
+                    <kbd class="shortcut-badge">Ctrl K</kbd>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="taskDesc" placeholder="Add optional details or notes..." style="font-size: 0.9rem; border-bottom-style: dashed;">
+                </div>
+                
+                <div class="form-options">
+                    <!-- Priority Selector -->
+                    <div class="select-wrapper">
+                        <i class="fa-solid fa-flag"></i>
+                        <select id="taskPriority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                    </div>
+
+                    <!-- Category Selector -->
+                    <div class="select-wrapper">
+                        <i class="fa-solid fa-tag"></i>
+                        <select id="taskCategory">
+                            <option value="General">General</option>
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Projects">Projects</option>
+                        </select>
+                    </div>
+
+                    <!-- Due Date Input -->
+                    <div class="date-wrapper">
+                        <i class="fa-regular fa-calendar"></i>
+                        <input type="date" id="taskDueDate">
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-plus"></i> Add Task
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TOOLBAR: SEARCH & FILTERS -->
+        <section class="toolbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search tasks...">
+            </div>
+
+            <!-- NEW: Sort Selector Dropdown -->
+            <div class="select-wrapper sort-wrapper">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <select id="sortSelect" aria-label="Sort Tasks">
+                    <option value="default">Sort: Default (Custom)</option>
+                    <option value="dueDate">Sort: Due Date (Earliest)</option>
+                    <option value="priority">Sort: Priority (High to Low)</option>
+                    <option value="title">Sort: Title (A–Z)</option>
+                </select>
+            </div>
+
+            <div class="filter-chips">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="active">Active</button>
+                <button class="chip" data-filter="completed">Completed</button>
+                <button class="chip" data-filter="high">High Priority</button>
+            </div>
+        </section>
+
+        <!-- TASK LIST STATS -->
+        <div class="stats-bar">
+            <span id="taskCountText">0 tasks remaining</span>
+            <button id="clearCompletedBtn" class="btn-link">Clear Completed</button>
         </div>
+
+        <!-- TASK CONTAINER -->
+        <main class="task-list-container">
+            <ul id="taskList" class="task-list"></ul>
+            <div id="emptyState" class="empty-state">
+                <i class="fa-regular fa-clipboard"></i>
+                <p>No tasks found. Add a task or load demo data to get started!</p>
+            </div>
+        </main>
     </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+
     <script src="scripts.js"></script>
 </body>
 </html>
